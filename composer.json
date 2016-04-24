@@ -1,0 +1,7 @@
+{
+    "require": {
+        "silex/silex": "~1.3",
+        "j4mie/paris": "^1.5",
+        "league/plates": "^3.1"
+    }
+}
