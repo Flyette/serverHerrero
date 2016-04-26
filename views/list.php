@@ -1,40 +1,33 @@
-
-<?php require_once __DIR__.'./../vendor/autoload.php';
+<?php
 require 'parts/header.php';
-
-
 ?>
 
 <table class="ui celled table">
 	<tr>
 		<thead>
 			<th>Numéro de commande</th>
+			<th>Nom</th>
+			<th>date</th>
+			<th>Nombre de photos</th>
 			<th>Détails</th>
+			<th>Archiver</th>
 		</thead>
 	</tr>		
 	<?php
-	$baskets = ORM::for_table('basketBDD')->find_many();
-	foreach ($baskets as $b):
-		$panier = $b->basket;
-		// $panier = json_decode($panier);
-
-		echo $panier;
-
-
-		// foreach ($panier as $i) {
-		// echo '<br>';
-		// echo $panier[$i];
-		// echo '<br>';
-		// }
-
-
-
+	$order = new Flyette\Models\Order();
+	$baskets = $order->all();
+	foreach ( $baskets as $b):
+		$v = $b->basket['data'];
 	?>
 	<tr>
-		<td><?php echo $b->id?></td>
-		<td><?php echo $b->basket?></td>
-	</tr>
+		<td><a href="?id=<?= $b->id ?>"><?= $b->id?></a></td>
+		<td><?= $b->nom?></td>
+		<td><?= Flyette\Models\Order::frenchDate($b->created_at)?></td>
+		<td><?= count($b->basket['data'])?></td>
+		<td><?php foreach ($v as $p) {echo '<image height="40" src="/phpHerrero/'.$p['url'].'"/>';}?></td>
+		<td><a href="#" class="ui blue button icon" title="Archiver l'utilisateur">X</a></td>
 <?php endforeach ?>
+	</tr>
 </table>
 
 <?php require 'parts/footer.php';?>
