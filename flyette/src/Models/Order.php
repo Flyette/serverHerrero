@@ -6,6 +6,7 @@ use Carbon\Carbon;
 
 class Order extends Model {
 
+
 	public function imageList($list){
 		$out = [];
 		foreach($list as $key=>$value) {
@@ -24,7 +25,7 @@ class Order extends Model {
 
 	public function get($id){
 		$basket = $this->db->find_one($id);
-			$basket->basket = json_decode($basket->basket, true);
+		$basket = json_decode($basket, true);
 		return $basket;
 
 	}
@@ -34,24 +35,29 @@ class Order extends Model {
 		return $date = $dt->formatLocalized('%A %d %h %Y, à %k:%M');
 	}
 
-		public function desarchive(){
-		$u = new Order;
-		$user = $u->get($_GET['id']);
-		$user->archive = 0;
-		$user->save();
+	public function desarchive(){
+		$o = new Order;
+		$order = $o->get($_POST['id']);
+		$order->archive = 0;
+		$order->save();
 	}
 
-		public function archive(){
-		$u = new Order;
-		$user = $u->get($_GET['id']);
-		$user->archive = 1;
-		$user->save();
+	public static function archive(){
+		$o = new Order;
+		$order = $o->get($_POST['id']);
+		$order->archive = 1;
+		$order->save();
 	}
 
-		public static function url($page, $id=false, $action=false){
-		//http://senny.dev/?page=users-show&id=1&action=archive
+	public function archived() {
+		return $this->db->where('archive',1)->find_many();
+	}
+
+	public static function url($page, $id=false, $action=false){
+		
 		$page = str_replace("/", "-", $page);
-		$domain = config()['url'];
+		$domain = 'index.php?/';
+
 		$url = $domain . "page=" . $page;
 		if($id){
 			$url .= "&id=" . $id;

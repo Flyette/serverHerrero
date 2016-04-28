@@ -3,7 +3,7 @@ require 'parts/header.php';
 
 
 $order = new Flyette\Models\Order();
-$o = $order->get($_GET['id']);
+$o = $order->get($_POST['id']);
 var_dump($o->basket);
 ?>
 
