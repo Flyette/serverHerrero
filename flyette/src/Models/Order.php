@@ -16,7 +16,7 @@ class Order extends Model {
 	}
 
 	public function all(){
-		$baskets = $this->db->find_many();
+		$baskets = $this->db->where('archive', 0)->find_many();
 		foreach ($baskets as $key => $value) {
 			$baskets[$key]->basket = json_decode($value->basket, true);
 		}
@@ -25,7 +25,7 @@ class Order extends Model {
 
 	public function get($id){
 		$basket = $this->db->find_one($id);
-		$basket = json_decode($basket, true);
+		$basket->basket = json_decode($basket->basket, true);
 		return $basket;
 
 	}
@@ -35,37 +35,30 @@ class Order extends Model {
 		return $date = $dt->formatLocalized('%A %d %h %Y, à %k:%M');
 	}
 
-	public function desarchive(){
-		$o = new Order;
-		$order = $o->get($_POST['id']);
-		$order->archive = 0;
-		$order->save();
+	public function desarchiv(){
+		$t = $this->db->find_one($_POST['id']);
+		$t->archive = 0;
+		$t->save();
 	}
 
-	public static function archive(){
-		$o = new Order;
-		$order = $o->get($_POST['id']);
-		$order->archive = 1;
-		$order->save();
+	public function archiv(){
+
+		$t = $this->db->find_one($_POST['id']);
+		$t->archive = 1;
+		$t->save();
 	}
 
 	public function archived() {
-		return $this->db->where('archive',1)->find_many();
+		$baskets = $this->db->where('archive',1)->find_many();
+		foreach ($baskets as $key => $value) {
+			$baskets[$key]->basket = json_decode($value->basket, true);
+		}
+		return $baskets;	
 	}
 
-	public static function url($page, $id=false, $action=false){
-		
-		$page = str_replace("/", "-", $page);
-		$domain = 'index.php?/';
-
-		$url = $domain . "page=" . $page;
-		if($id){
-			$url .= "&id=" . $id;
-		}
-		if($action) {
-			$url .= "&action=" . $action;
-		}
-		return $url;
+		public function deleteOrder(){
+		$t = $this->db->find_one($_POST['id']);
+		$t->delete();
 	}
 
 }

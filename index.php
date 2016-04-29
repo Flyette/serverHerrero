@@ -11,7 +11,7 @@ connect();
 
 $app = new Silex\Application();
 
-
+$app['debug'] = true;
 
 $app->get('/', function () use ($templates){
 	if(isset($_GET['id'])){
@@ -20,12 +20,8 @@ $app->get('/', function () use ($templates){
 		echo $templates->render('list');
 	}
 	return '';
-	// ob_start();
-	// require 'views/list.php';
-	// $view = ob_get_contents();
-	// ob_end_clean();
-	// return $view;
 });
+
 
 $app->get('/photos', function(){
 	$images = [];
@@ -38,14 +34,38 @@ $app->get('/photos', function(){
 
 $app->post('/archive', function () use ($templates){
 	if(isset($_POST['id'])){
+		$order = new Flyette\Models\Order();
+		$order->archiv($_POST['id']);
+		echo $templates->render('archive');
 	} 
-	Flyette\Models\Order::archive($_POST['id']);
-
-	echo $templates->render('archive');
 	return '';
 });
 
+$app->post('/desarchive', function () use ($templates){
+	if(isset($_POST['id'])){
+		$order = new Flyette\Models\Order();
+		$order->desarchiv($_POST['id']);
+		echo $templates->render('listArchive');
+	} 
+	return '';
+});
 
+$app->post('/listArchive', function() use ($templates){
+	if(isset($_POST['id'])){
+		echo $templates->render('listArchive');
+	}
+	return '';
+});
+
+$app->get('/listArchive', function() use ($templates){
+	if(isset($_GET['id'])){
+		echo $templates->render('archive');
+	}
+	else {echo $templates->render('listArchive');
+	}
+	return '';
+
+});
 
 $app->post('/', function(){
 	ob_start();
@@ -55,13 +75,18 @@ $app->post('/', function(){
 	return $view;
 });
 
-
-$app['debug'] = true;
-
+$app->post('/delete', function() use ($templates){
+	if(isset($_POST['id'])){
+		$order = new Flyette\Models\Order();
+		$order->deleteOrder($_POST['id']);
+		echo $templates->render('listArchive');
+	}
+	return '';
+});
 
 function create($data, $name){
 	$basket = ORM::for_table('basketBDD')->create();
-	$basket->basket = json_decode($data);
+	$basket->basket = $data;
 	$basket->nom = $name;
 	$basket->save();
 }

@@ -1,12 +1,22 @@
 <?php 
 require 'parts/header.php';
-
-
 $order = new Flyette\Models\Order();
-$o = $order->get($_POST['id']);
-var_dump($o->basket);
-?>
+$o = $order->get($_GET['id']);
 
+?>
+<!-- menu vertical -->
+<div class="ui inverted segment">
+	<div class="ui inverted secondary pointing menu">
+		<a class="item" href="../index.php">
+			Commandes
+		</a>
+		<a class="item" href="../index.php/listArchive">
+			Commandes archivées
+		</a>
+	</div>
+</div>
+
+<h2>Commande exécutée</h2>
 <table class="ui celled table">
 	<tr>
 		<thead>
@@ -14,7 +24,7 @@ var_dump($o->basket);
 			<th>Identifiant</th>
 			<th>Nb de photos</th>
 			<th>Date de la commande</th>
-			<th>statut</th>
+			<th>Supprimer</th>
 		</thead>
 	</tr>
 	<tr>
@@ -22,7 +32,12 @@ var_dump($o->basket);
 		<td><?=$o->id?></td>
 		<td><?= count($o->basket['data'])?></td>
 		<td><?= Flyette\Models\Order::frenchDate($o->created_at)?></td>
-		<td>Fait</td>
+		<td>
+			<form action="../index.php/delete" method="post">
+				<p><input type="hidden" name="id" value="<?=$b->id?>"></p>
+				<p><input class="ui button red" type="submit" value="X"></p>
+			</form>
+		</td>
 	</tr>
 </table>	
 
@@ -33,5 +48,5 @@ var_dump($o->basket);
 	</div>
 </div>
 
-<div>Vue des photos : <br><?php foreach ($o->basket['data'] as $p) {echo '<image height="80" src="'.$p['url'].'"/>'; echo '<br>';}?></div>
+<div>Vue des photos : <br><?php foreach ($o->basket['data'] as $p) {echo '<image height="80" src="'.$p['url'].'"/>';}?></div>
 <?php require 'parts/footer.php' ?>
