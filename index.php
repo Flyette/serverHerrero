@@ -22,21 +22,33 @@ $app->get('/', function () use ($templates){
 	return '';
 });
 
+$app->get('/resize', function() use ($resize){
+	$resize();
+	return '';
+});
+
+$app->get('/img/{img}', function($img) use ($getImage){
+	//var_dump($getImage($img));
+
+	$d= $getImage($img);
+	dd($d);
+});
 
 $app->get('/photos', function(){
 	$images = [];
-	foreach (glob("img/*.JPG") as $pic) {
-		array_push($images, ['url'=>'http://192.168.1.14/phpHerrero/'.$pic]);
+	foreach (glob("img/*") as $pic) {
+		array_push($images, ['url'=>$pic]);
 	}
 	return json_encode($images);
 	
 });
 
+
 $app->post('/archive', function () use ($templates){
 	if(isset($_POST['id'])){
 		$order = new Flyette\Models\Order();
 		$order->archiv($_POST['id']);
-		echo $templates->render('archive');
+		echo $templates->render('listArchive');
 	} 
 	return '';
 });
@@ -62,8 +74,8 @@ $app->get('/listArchive', function() use ($templates){
 		echo $templates->render('archive');
 	}
 	else {echo $templates->render('listArchive');
-	}
-	return '';
+}
+return '';
 
 });
 

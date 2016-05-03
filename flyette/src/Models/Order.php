@@ -56,8 +56,8 @@ class Order extends Model {
 		return $baskets;	
 	}
 
-		public function deleteOrder(){
-		$t = $this->db->find_one($_POST['id']);
+		public function deleteOrder($id){
+		$t = $this->db->find_one($id);
 		$t->delete();
 	}
 

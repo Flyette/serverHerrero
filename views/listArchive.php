@@ -6,7 +6,7 @@ $baskets = $order->archived();?>
 <div class="ui inverted segment">
   <div class="ui inverted secondary pointing menu">
     <a class="item" href="../index.php">
-      Commandes
+      Commandes en cours
     </a>
     <a class="active item" href="../index.php/listArchive">
       Commandes archivées

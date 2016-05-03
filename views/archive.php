@@ -8,7 +8,7 @@ $o = $order->get($_GET['id']);
 <div class="ui inverted segment">
 	<div class="ui inverted secondary pointing menu">
 		<a class="item" href="../index.php">
-			Commandes
+			Commandes en cours
 		</a>
 		<a class="item" href="../index.php/listArchive">
 			Commandes archivées
@@ -34,7 +34,7 @@ $o = $order->get($_GET['id']);
 		<td><?= Flyette\Models\Order::frenchDate($o->created_at)?></td>
 		<td>
 			<form action="../index.php/delete" method="post">
-				<p><input type="hidden" name="id" value="<?=$b->id?>"></p>
+				<p><input type="hidden" name="id" value="<?=$o->id?>"></p>
 				<p><input class="ui button red" type="submit" value="X"></p>
 			</form>
 		</td>

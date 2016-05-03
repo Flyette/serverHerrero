@@ -10,7 +10,7 @@ $o = $order->get($_GET['id']);
 <div class="ui inverted segment">
   <div class="ui inverted secondary pointing menu">
     <a class="item" href="index.php">
-      Commandes
+      Commandes en cours
     </a>
     <a class="item" href="index.php/listArchive">
       Commandes archivées

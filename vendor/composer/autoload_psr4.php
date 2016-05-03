@@ -14,7 +14,12 @@ return array(
     'Symfony\\Component\\EventDispatcher\\' => array($vendorDir . '/symfony/event-dispatcher'),
     'Symfony\\Component\\Debug\\' => array($vendorDir . '/symfony/debug'),
     'Silex\\' => array($vendorDir . '/silex/silex/src/Silex'),
+    'Psr\\Http\\Message\\' => array($vendorDir . '/psr/http-message/src'),
     'League\\Plates\\' => array($vendorDir . '/league/plates/src'),
+    'League\\Glide\\' => array($vendorDir . '/league/glide/src', $vendorDir . '/league/glide-symfony/src'),
+    'League\\Flysystem\\' => array($vendorDir . '/league/flysystem/src'),
+    'Intervention\\Image\\' => array($vendorDir . '/intervention/image/src/Intervention/Image'),
+    'GuzzleHttp\\Psr7\\' => array($vendorDir . '/guzzlehttp/psr7/src'),
     'Flyette\\' => array($baseDir . '/flyette/src'),
     'Carbon\\' => array($vendorDir . '/nesbot/carbon/src/Carbon'),
 );
