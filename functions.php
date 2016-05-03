@@ -3,6 +3,8 @@ use League\Flysystem\Adapter\Local;
 use League\Flysystem\Filesystem;
 use League\Glide\ServerFactory;
 use League\Glide\Responses\SymfonyResponseFactory;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 
 function dd($var){
@@ -38,14 +40,9 @@ $resize = function() use($server, $riddim) {
 	foreach ($foo as $path) {
 		$tgallan = str_replace($dir, '',$path);
 		$riddim($tgallan);
-		echo 'redim terminé';
 	}
 };
 
 $getImage = function($img) use($server) {
-
-	// $fooPath = $_SERVER["REQUEST_URI"];
-	// $path = substr(strrchr($fooPath, '/'), 1);
 	return $server->getImageResponse($img, ['w' => 300, 'h' => 400]);
-
 };

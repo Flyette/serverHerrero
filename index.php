@@ -1,13 +1,14 @@
-
 <?php
 require_once __DIR__.'/vendor/autoload.php';
 require_once __DIR__.'/functions.php';
 use Flyette\Models;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\HttpFoundation\StreamedResponse;
 
 $templates = new League\Plates\Engine('views');
 
 connect();
-
 
 $app = new Silex\Application();
 
@@ -27,12 +28,12 @@ $app->get('/resize', function() use ($resize){
 	return '';
 });
 
-$app->get('/img/{img}', function($img) use ($getImage){
-	//var_dump($getImage($img));
-
+$app->get('/img/{img}', function(Silex\Application $app, $img) use ($getImage){
 	$d= $getImage($img);
-	dd($d);
+	return $app->stream($d->send(), 200, ['Content-Type'=>'image/jpeg']);
 });
+
+
 
 $app->get('/photos', function(){
 	$images = [];
@@ -50,7 +51,7 @@ $app->post('/archive', function () use ($templates){
 		$order->archiv($_POST['id']);
 		echo $templates->render('listArchive');
 	} 
-	return '';
+	return $app->redirect('list');
 });
 
 $app->post('/desarchive', function () use ($templates){
