@@ -26,13 +26,19 @@ $app->get('/img/{img}', function(Silex\Application $app, $img) use ($getImage){
 });
 
 
-
 $app->get('/photos', function(){
-	$images = [];
-	foreach (glob("img/*") as $pic) {
+	$imagess = [];
+	$photos = (glob('photos/*'));
+	foreach ($photos as $dos) {
+	$images = array(
+		'title' => $dos
+	);
+	foreach (glob($dos."/img/*") as $pic) {
 		array_push($images, ['url'=>$pic]);
 	}
-	return json_encode($images);
+	array_push($imagess, $images);
+	}
+	return json_encode($imagess);
 	
 });
 
@@ -47,6 +53,7 @@ $app->get('/', function () use ($templates){
 
 
 $app->get('/commandes/', function () use ($templates){
+	var_dump(glob('photos/*/*'));
 	if(isset($_GET['id'])){
 		echo $templates->render('show');
 	} else {
