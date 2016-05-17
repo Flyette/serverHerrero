@@ -6,6 +6,7 @@ use League\Glide\Responses\SymfonyResponseFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+$imgsize = ['w' => 600];
 
 function dd($var){
 	echo '<pre>';
@@ -28,8 +29,8 @@ $server = League\Glide\ServerFactory::create([
 	'response' => new SymfonyResponseFactory()
 	]);
 
-$riddim = function($image) use ($server){
-	$server->outputImage($image, ['w' => 300, 'h' => 400]);
+$riddim = function($image) use ($server, $imgsize){
+	$server->makeImage($image, $imgsize);
 };
 
 $resize = function() use($server, $riddim) {
@@ -44,5 +45,5 @@ $resize = function() use($server, $riddim) {
 };
 
 $getImage = function($img) use($server) {
-	return $server->getImageResponse($img, ['w' => 300, 'h' => 400]);
+	return $server->getImageResponse($img, $imgsize);
 };

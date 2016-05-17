@@ -14,14 +14,6 @@ $app = new Silex\Application();
 
 $app['debug'] = true;
 
-$app->get('/', function () use ($templates){
-	if(isset($_GET['id'])){
-		echo $templates->render('show');
-	} else {
-		echo $templates->render('list');
-	}
-	return '';
-});
 
 $app->get('/resize', function() use ($resize){
 	$resize();
@@ -44,17 +36,58 @@ $app->get('/photos', function(){
 	
 });
 
+$app->get('/', function () use ($templates){
+	if(isset($_GET['id'])){
+		echo $templates->render('show');
+	} else {
+		echo $templates->render('list');
+	}
+	return '';
+});
 
-$app->post('/archive', function () use ($templates){
+
+$app->get('/commandes/', function () use ($templates){
+	if(isset($_GET['id'])){
+		echo $templates->render('show');
+	} else {
+		echo $templates->render('list');
+	}
+	return '';
+});
+
+$app->post('/commandes/archive', function () use ($app, $templates){
 	if(isset($_POST['id'])){
 		$order = new Flyette\Models\Order();
 		$order->archiv($_POST['id']);
-		echo $templates->render('listArchive');
+		echo $templates->render('list');
 	} 
-	return $app->redirect('list');
+	return '';
 });
 
-$app->post('/desarchive', function () use ($templates){
+$app->get('/commandes/archive', function() use ($templates){
+	if(isset($_GET['id'])){
+		echo $templates->render('show');
+	}
+	return '';
+});
+
+
+$app->get('/commandes/desarchive', function() use ($templates){
+	if(isset($_GET['id'])){
+		echo $templates->render('archive');
+	}
+	return '';
+});
+
+
+$app->get('/commandes/delete', function() use ($templates){
+	if(isset($_GET['id'])){
+		echo $templates->render('archive');
+	}
+	return '';
+});
+
+$app->post('/commandes/desarchive', function () use ($templates){
 	if(isset($_POST['id'])){
 		$order = new Flyette\Models\Order();
 		$order->desarchiv($_POST['id']);
@@ -63,14 +96,7 @@ $app->post('/desarchive', function () use ($templates){
 	return '';
 });
 
-$app->post('/listArchive', function() use ($templates){
-	if(isset($_POST['id'])){
-		echo $templates->render('listArchive');
-	}
-	return '';
-});
-
-$app->get('/listArchive', function() use ($templates){
+$app->get('/commandes/archives', function() use ($templates){
 	if(isset($_GET['id'])){
 		echo $templates->render('archive');
 	}
@@ -80,7 +106,17 @@ return '';
 
 });
 
-$app->post('/', function(){
+$app->get('/index', function() use ($templates){
+	if(isset($_GET['id'])){
+		echo $templates->render('show');
+	}
+	else {echo $templates->render('list');
+}
+return '';
+
+});
+
+$app->post('/commandes/create', function(){
 	ob_start();
 	create($_POST['tiens'], $_POST['identifiant']);
 	$view = ob_get_contents();
@@ -88,7 +124,7 @@ $app->post('/', function(){
 	return $view;
 });
 
-$app->post('/delete', function() use ($templates){
+$app->post('/commandes/delete', function() use ($templates){
 	if(isset($_POST['id'])){
 		$order = new Flyette\Models\Order();
 		$order->deleteOrder($_POST['id']);

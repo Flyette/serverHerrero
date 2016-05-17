@@ -4,17 +4,17 @@ require 'parts/header.php';
 <?php $order = new Flyette\Models\Order();
 $baskets = $order->archived();?>
 <div class="ui inverted segment">
-  <div class="ui inverted secondary pointing menu">
-    <a class="item" href="../index.php">
-      Commandes en cours
-    </a>
-    <a class="active item" href="../index.php/listArchive">
-      Commandes archivées
-    </a>
-    <a class="item right nb_c">
+	<div class="ui inverted secondary pointing menu">
+		<a class="item" href="../commandes">
+			Commandes en cours
+		</a>
+		<a class="active item" href="archives">
+			Commandes archivées
+		</a>
+		<a class="item right nb_c">
 			<?= count($baskets)?> Commande(s) en cours
 		</a>
-  </div>
+	</div>
 </div>
 <h2>Commandes archivées</h2>
 <table class="ui celled table">
@@ -30,7 +30,7 @@ $baskets = $order->archived();?>
 	</thead>
 	<?php
 	foreach ( $baskets as $b):
-	?>
+		?>
 	<tr>
 		<td><a href="?id=<?= $b->id ?>"><?= $b->id?></a></td>
 		<td><?= $b->nom?></td>
@@ -38,7 +38,7 @@ $baskets = $order->archived();?>
 		<td><?= count($b->basket['data'])?></td>
 		<td><?php $v = $b->basket['data']; foreach ($v as $p) {echo '<image height="40" src="'.$p['url'].'"/>';}?></td>
 		<td>
-			<form action="../index.php/desarchive" method="post">
+			<form action="desarchive" method="post">
 				<p><input type="hidden" name="id" value="<?=$b->id?>"></p>
 				<p><input class="ui button blue" type="submit" value="<-"></p>
 			</form>

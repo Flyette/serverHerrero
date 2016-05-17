@@ -7,10 +7,10 @@ $o = $order->get($_GET['id']);
 <!-- menu vertical -->
 <div class="ui inverted segment">
 	<div class="ui inverted secondary pointing menu">
-		<a class="item" href="../index.php">
+		<a class="item" href="../commandes">
 			Commandes en cours
 		</a>
-		<a class="item" href="../index.php/listArchive">
+		<a class="item" href="archives">
 			Commandes archivées
 		</a>
 	</div>
@@ -33,7 +33,7 @@ $o = $order->get($_GET['id']);
 		<td><?= count($o->basket['data'])?></td>
 		<td><?= Flyette\Models\Order::frenchDate($o->created_at)?></td>
 		<td>
-			<form action="../index.php/delete" method="post">
+			<form action="delete" method="post">
 				<p><input type="hidden" name="id" value="<?=$o->id?>"></p>
 				<p><input class="ui button red" type="submit" value="X"></p>
 			</form>
