@@ -27,20 +27,20 @@ $app->get('/img/{img}', function(Silex\Application $app, $img) use ($getImage){
 
 
 $app->get('/photos', function(){
-	$imagess = [];
-	$photos = (glob('photos/*'));
-	foreach ($photos as $dos) {
-	$images = array(
-		'title' => $dos
-	);
-	foreach (glob($dos."/img/*") as $pic) {
-		array_push($images, ['url'=>$pic]);
-	}
-	array_push($imagess, $images);
-	}
-	return json_encode($imagess);
-	
-});
+	$data = [];
+	$dossiers = (glob('photos/*'));
+	foreach ($dossiers as $dos) {
+		$dossierParent = array(
+			'title' => $dos,
+			'img' => []);
+			foreach (glob($dos."/img/*") as $pic) {
+				array_push($dossierParent['img'], ['url'=>$pic]);
+			}
+			array_push($data, $dossierParent);
+		};
+		return json_encode($data);
+
+	});
 
 $app->get('/', function () use ($templates){
 	if(isset($_GET['id'])){
