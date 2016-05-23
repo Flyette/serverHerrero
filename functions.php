@@ -30,13 +30,11 @@ $server = League\Glide\ServerFactory::create([
 
 // $server->setBaseUrl('/photos/')
 
-function riddim ($image) {
+$riddim = function ($image) use ($server){
 	$server->outputImage($image, ['w' => 300, 'h' => 400]);
-}
+};
 
-$resize = function() use($server) {
-
-
+$resize = function() use($server, $riddim) {
 	$dir = __DIR__.'/photos/';
 	$dosParent = glob($dir.'*');
 	
@@ -46,7 +44,7 @@ $resize = function() use($server) {
 		foreach ($candidat as $path) {
 			$tgallan = str_replace($dir, '',$path);
 			echo($tgallan);
-			riddim($tgallan);
+			$riddim($tgallan);
 			echo 'redim terminé';
 		}
 	}
