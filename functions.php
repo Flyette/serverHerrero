@@ -26,22 +26,26 @@ function connect(){
 $server = League\Glide\ServerFactory::create([
 	'source' => __DIR__.'/photos',
 	'cache' => __DIR__.'/new_images',
+	'watermarks' => new Filesystem(new Local(__DIR__.'/watermark')),
 	]);
 
 $riddim = function($image) use ($server){
-	$server->outputImage($image, ['w' => 300, 'h' => 400]);
+	$server->outputImage($image, ['w' => 400]);
 };
 
 $resize = function() use($server, $riddim) {
 	$dir = __DIR__.'/photos/';
 	$dosParent = glob($dir.'*');
 	foreach ($dosParent as $dosEnfant) {
+		if(is_dir($dosEnfant)){
+
 		$candidat = glob($dosEnfant.'/*');
 		foreach ($candidat as $path) {
 			$tgallan = str_replace($dir, '',$path);
 			echo($tgallan);
 			$riddim($tgallan);
 			echo 'redim terminé';
+		}
 		}
 	}
 };
@@ -52,7 +56,7 @@ $getImage = function($path=null) use($server) {
 		$path = substr(strrchr($fooPath, '/'), 1);
 		
 	}
-	$server->outputImage($path, ['w' => 300, 'h' => 400]);
+	$server->outputImage($path, ['w' => 350]);
 };
 
 $genTableau = function() {

@@ -19,34 +19,29 @@ $o = $order->get($_GET['id']);
 </div>
 
 <h2>Commande en cours</h2>
-<table class="ui celled table">
-	<tr>
-		<thead>
-			<th>Nom</th>
-			<th>Identifiant</th>
-			<th>Nb de photos</th>
-			<th>Date de la commande</th>
-			<th>Statut</th>
-		</thead>
-	</tr>
-	<tr>
-		<td><?=$o->nom?></td>
-		<td><?=$o->id?></td>
-		<td><?= count($o->basket['data'])?></td>
-		<td><?= Flyette\Models\Order::frenchDate($o->created_at)?></td>
-		<td>
-			<form action="archive" method="post">
-				<p><input type="hidden" name="id" value="<?=$o->id?>"></p>
-				<p><input class="ui button green" type="submit" value="Fait"></p>
-			</form>
-		</td>
-	</tr>
-</table>	
-
-<div class="ui vertical floated right">
-	<div class="header">Liste des photos</div>
-	<div class="list_photo"><?php foreach ($o->basket['data'] as $p) {echo $p['url']; echo '<br>';}?></div>
+<div class="ui grid">
+	<div class="five wide column">
+		<h2>Nom : <?=$o->nom?></h2>
+		<h3>Identifiant : <?=$o->id?></h3>
+		<h3>Date de la commande : <?= Flyette\Models\Order::frenchDate($o->created_at)?></h3>
+		<form action="archive" method="post">
+			<p><input type="hidden" name="id" value="<?=$o->id?>"></p>
+			<p><input class="ui button green" type="submit" value="Fait"></p>
+		</form>
+	</div>	
+	<div class="eleven wide column">
+		<table class="ui celled table">
+			<tr>
+				<thead>
+					<th>Nb de photos <?= count($o->basket['data'])?></th>
+					<th>Liste et Format des photos commandées</th>
+				</thead>
+			</tr>
+			<tr>
+				<td><?php foreach ($o->basket['data'] as $p) { echo '<image height="80" src="'.$p['url'].'"/>'; echo '<br>';}?></td>
+				<td><?php foreach ($o->basket['data'] as $p) { echo $p['url']; echo '<br>';echo '<h4>'.$p['format'].'</h4>'; echo '<br>';}?></td>
+			</tr>
+		</table>	
+	</div>
 </div>
-
-<div>Vue des photos : <br><?php foreach ($o->basket['data'] as $p) {echo '<image height="80" src="'.$p['url'].'"/>';}?></div>
 <?php require 'parts/footer.php' ?>

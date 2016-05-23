@@ -26,50 +26,46 @@ $app->get('/img/{dossier}/{img}', function(Silex\Application $app, $dossier, $im
 	return $app->stream($d->send(), 200, ['Content-Type'=>'image/jpeg']);
 });
 
-
+//envoie les dossier photos 
 $app->get('/photos', function(){
 	$data = [];
 	$dossiers = (glob('photos/*'));
 	foreach ($dossiers as $dos) {
 		$dossierParent = array(
-			'title' => $dos,
+			'title' => substr($dos, 7),
 			'img' => []);
-			foreach (glob($dos."/*") as $pic) {
-				$pic = substr($pic, 7);
-				$pic = 'index.php/img/'.$pic;
-				array_push($dossierParent['img'], ['url'=>$pic]);
-			}
-			array_push($data, $dossierParent);
-		};
-		return json_encode($data);
+		foreach (glob($dos."/*") as $pic) {
+			$pic = substr($pic, 7);
+			$pic = 'index.php/img/'.$pic;
+			array_push($dossierParent['img'], ['url'=>$pic]);
+		}
+		array_push($data, $dossierParent);
+	};
+	return json_encode($data);
 
-	});
-
+});
+//chemin des dossiers photos
 $app->get('/photos/{dossier}', function($dossier) {
 	$data = [];
 	$dossiers = (glob('photos/'.$dossier.'/*'));
 	foreach ($dossiers as $dos) {
 		$dossierParent = array(
 			'img' => $dos);
-			foreach (glob($dos."/*") as $pic) {
-				array_push($dossierParent, ['url'=>$pic]);
-			}
-			array_push($data, $dossierParent);
-		};
-		return json_encode($data);
-
-});
-
-$app->get('/', function () use ($templates){
-	if(isset($_GET['id'])){
-		echo $templates->render('show');
-	} else {
-		echo $templates->render('list');
-	}
-	return '';
+		foreach (glob($dos."/*") as $pic) {
+			array_push($dossierParent, ['url'=>$pic]);
+		}
+		array_push($data, $dossierParent);
+	};
+	return json_encode($data);
 });
 
 
+$app->get('/', function () use ($app){
+	return $app->redirect('index.php/commandes/');
+
+});
+
+//listes des commandes en cours
 $app->get('/commandes/', function () use ($templates){
 	// var_dump(glob('photos/*/*'));
 	if(isset($_GET['id'])){
@@ -79,6 +75,21 @@ $app->get('/commandes/', function () use ($templates){
 	}
 	return '';
 });
+
+$app->get('/commandes/fichier', function() use ($templates){
+	return $templates->render('file');
+});
+
+//parcourir un dossier et l'ajouter dans dossier photos
+$app->post('/commandes/post',function(){
+	return '';
+
+});
+
+$app->get('/commandes/post', function(){
+	return '';
+});
+
 
 $app->post('/commandes/archive', function () use ($app, $templates){
 	if(isset($_POST['id'])){

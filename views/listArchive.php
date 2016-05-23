@@ -25,6 +25,7 @@ $baskets = $order->archived();?>
 			<th>date</th>
 			<th>Nombre de photos</th>
 			<th>Détails</th>
+			<th>Ouvrir</th>
 			<th>Désarchiver</th>
 		</tr>		
 	</thead>
@@ -33,10 +34,14 @@ $baskets = $order->archived();?>
 		?>
 	<tr>
 		<td><a href="?id=<?= $b->id ?>"><?= $b->id?></a></td>
-		<td><?= $b->nom?></td>
-		<td><?= Flyette\Models\Order::frenchDate($b->created_at)?></td>
-		<td><?= count($b->basket['data'])?></td>
-		<td><?php $v = $b->basket['data']; foreach ($v as $p) {echo '<image height="40" src="'.$p['url'].'"/>';}?></td>
+		<td><a href="?id=<?= $b->id ?>"><?= $b->nom?></a></td>
+		<td><a href="?id=<?= $b->id ?>"><?= Flyette\Models\Order::frenchDate($b->created_at)?></a></td>
+		<td><a href="?id=<?= $b->id ?>"><?= count($b->basket['data'])?></a></td>
+		<td><a href="?id=<?= $b->id ?>"><?php $v = $b->basket['data']; foreach ($v as $p) {echo '<image height="40" src="'.$p['url'].'"/>';}?></a></td>
+		<td><form  class="ui form" action="" method="get">
+					<p><input type="hidden" name="id" value="<?=$b->id?>"></p>
+					<p><input class="ui button" type="submit" value="Voir"></p>
+				</form></td>
 		<td>
 			<form action="desarchive" method="post">
 				<p><input type="hidden" name="id" value="<?=$b->id?>"></p>
