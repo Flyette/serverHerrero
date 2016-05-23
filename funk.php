@@ -3,9 +3,19 @@ require_once __DIR__.'/vendor/autoload.php';
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\Filesystem;
 use League\Glide\ServerFactory;
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
+use Monolog\Handler\FirePHPHandler;
+
+// Create the logger
+$logger = new Logger('my_logger');
+// Now add some handlers
+$logger->pushHandler(new StreamHandler(__DIR__.'/my_app.log', Logger::DEBUG));
+$logger->pushHandler(new FirePHPHandler());
+
 
 $server = League\Glide\ServerFactory::create([
-	'source' => __DIR__.'photos/doosier1/img',
+	'source' => __DIR__.'/photos',
 	'cache' => __DIR__.'/new_images',
 	]);
 
@@ -17,14 +27,19 @@ function riddim ($image) {
 
 $resize = function() use($server) {
 
-	$dir = __DIR__.'/photos/doosier1/img/';
-	$foo = glob($dir.'*');
 
-	foreach ($foo as $path) {
-		$tgallan = str_replace($dir, '',$path);
-		var_dump($tgallan);
-		riddim($tgallan);
-		echo 'redim terminé';
+	$dir = __DIR__.'/photos/';
+	$dosParent = glob($dir.'*');
+	
+	foreach ($dosParent as $dosEnfant) {
+		$candidat = glob($dosEnfant.'/*');
+
+		foreach ($candidat as $path) {
+			$tgallan = str_replace($dir, '',$path);
+			echo($tgallan);
+			riddim($tgallan);
+			echo 'redim terminé';
+		}
 	}
 };
 

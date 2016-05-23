@@ -16,6 +16,7 @@ $app['debug'] = true;
 
 
 $app->get('/resize', function() use ($resize){
+	echo('coucou');
 	$resize();
 	return '';
 });
@@ -33,7 +34,7 @@ $app->get('/photos', function(){
 		$dossierParent = array(
 			'title' => $dos,
 			'img' => []);
-			foreach (glob($dos."/img/*") as $pic) {
+			foreach (glob($dos."/*") as $pic) {
 				array_push($dossierParent['img'], ['url'=>$pic]);
 			}
 			array_push($data, $dossierParent);
@@ -41,6 +42,21 @@ $app->get('/photos', function(){
 		return json_encode($data);
 
 	});
+
+$app->get('/photos/{dossier}', function($dossier) {
+	$data = [];
+	$dossiers = (glob('photos/'.$dossier.'/*'));
+	foreach ($dossiers as $dos) {
+		$dossierParent = array(
+			'img' => $dos);
+			foreach (glob($dos."/*") as $pic) {
+				array_push($dossierParent, ['url'=>$pic]);
+			}
+			array_push($data, $dossierParent);
+		};
+		return json_encode($data);
+
+});
 
 $app->get('/', function () use ($templates){
 	if(isset($_GET['id'])){
@@ -53,7 +69,7 @@ $app->get('/', function () use ($templates){
 
 
 $app->get('/commandes/', function () use ($templates){
-	var_dump(glob('photos/*/*'));
+	// var_dump(glob('photos/*/*'));
 	if(isset($_GET['id'])){
 		echo $templates->render('show');
 	} else {
