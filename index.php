@@ -21,8 +21,8 @@ $app->get('/resize', function() use ($resize){
 	return '';
 });
 
-$app->get('/img/{img}', function(Silex\Application $app, $img) use ($getImage){
-	$d= $getImage($img);
+$app->get('/img/{dossier}/{img}', function(Silex\Application $app, $dossier, $img) use ($getImage){
+	$d= $getImage($dossier.'/'.$img);
 	return $app->stream($d->send(), 200, ['Content-Type'=>'image/jpeg']);
 });
 

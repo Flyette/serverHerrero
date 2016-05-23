@@ -1,4 +1,5 @@
 <?php 
+require_once __DIR__.'/vendor/autoload.php';
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\Filesystem;
 use League\Glide\ServerFactory;
@@ -23,27 +24,43 @@ function connect(){
 
 
 $server = League\Glide\ServerFactory::create([
-	'source' => __DIR__.'/img',
+	'source' => __DIR__.'/photos',
 	'cache' => __DIR__.'/new_images',
-	'base_url' => '/',
-	'response' => new SymfonyResponseFactory()
 	]);
 
-$riddim = function($image) use ($server, $imgsize){
-	$server->makeImage($image, $imgsize);
-};
+// $server->setBaseUrl('/photos/')
 
-$resize = function() use($server, $riddim) {
+function riddim ($image) {
+	$server->outputImage($image, ['w' => 300, 'h' => 400]);
+}
 
-	$dir = __DIR__.'/img/';
-	$foo = glob($dir.'*');
+$resize = function() use($server) {
 
-	foreach ($foo as $path) {
-		$tgallan = str_replace($dir, '',$path);
-		$riddim($tgallan);
+
+	$dir = __DIR__.'/photos/';
+	$dosParent = glob($dir.'*');
+	
+	foreach ($dosParent as $dosEnfant) {
+		$candidat = glob($dosEnfant.'/*');
+
+		foreach ($candidat as $path) {
+			$tgallan = str_replace($dir, '',$path);
+			echo($tgallan);
+			riddim($tgallan);
+			echo 'redim terminé';
+		}
 	}
 };
 
-$getImage = function($img) use($server) {
-	return $server->getImageResponse($img, $imgsize);
+$getImage = function($path=null) use($server) {
+	if(is_null($path)){
+		$fooPath = $_SERVER["REQUEST_URI"];
+		$path = substr(strrchr($fooPath, '/'), 1);
+		
+	}
+	$server->outputImage($path, ['w' => 300, 'h' => 400]);
+};
+
+$genTableau = function() {
+
 };
