@@ -35,6 +35,8 @@ $app->get('/photos', function(){
 			'title' => $dos,
 			'img' => []);
 			foreach (glob($dos."/*") as $pic) {
+				$pic = substr($pic, 7);
+				$pic = 'index.php/img/'.$pic;
 				array_push($dossierParent['img'], ['url'=>$pic]);
 			}
 			array_push($data, $dossierParent);

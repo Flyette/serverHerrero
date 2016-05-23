@@ -28,19 +28,15 @@ $server = League\Glide\ServerFactory::create([
 	'cache' => __DIR__.'/new_images',
 	]);
 
-// $server->setBaseUrl('/photos/')
-
-$riddim = function ($image) use ($server){
+$riddim = function($image) use ($server){
 	$server->outputImage($image, ['w' => 300, 'h' => 400]);
 };
 
 $resize = function() use($server, $riddim) {
 	$dir = __DIR__.'/photos/';
 	$dosParent = glob($dir.'*');
-	
 	foreach ($dosParent as $dosEnfant) {
 		$candidat = glob($dosEnfant.'/*');
-
 		foreach ($candidat as $path) {
 			$tgallan = str_replace($dir, '',$path);
 			echo($tgallan);
