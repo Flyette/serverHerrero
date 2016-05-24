@@ -1,7 +1,6 @@
 <?php
 require 'parts/header.php';
-?>
-<?php $order = new Flyette\Models\Order();
+$order = new Flyette\Models\Order();
 $baskets = $order->all();
 ?>
 <div class="ui inverted segment">

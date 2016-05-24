@@ -14,7 +14,13 @@ $app = new Silex\Application();
 
 $app['debug'] = true;
 
+//route de départ qui redirige directemetn sur les commandes en cours
+$app->get('/', function () use ($app){
+	return $app->redirect('index.php/commandes/');
 
+});
+
+//redimensionne les photos
 $app->get('/resize', function() use ($resize){
 	echo('coucou');
 	$resize();
@@ -24,6 +30,35 @@ $app->get('/resize', function() use ($resize){
 $app->get('/img/{dossier}/{img}', function(Silex\Application $app, $dossier, $img) use ($getImage){
 	$d= $getImage($dossier.'/'.$img);
 	return $app->stream($d->send(), 200, ['Content-Type'=>'image/jpeg']);
+});
+
+$app->post('/commandes/file.php', function(){
+	 header('Content-Transfer-Encoding: binary'); //Transfert en binaire
+
+//Créer un identifiant difficile à deviner
+
+  $nom = md5(uniqid(rand(), true));
+  $nom = "photos/";
+
+$resultat = move_uploaded_file($_FILES['icone']['tmp_name'],$nom);
+
+if ($resultat) echo "Transfert réussi";
+function upload($index,$destination,$maxsize=FALSE,$extensions=FALSE)
+
+{
+   //Test1: fichier correctement uploadé
+     if (!isset($_FILES[$index]) OR $_FILES[$index]['error'] > 0) return FALSE;
+//Déplacement
+     return move_uploaded_file($_FILES[$index]['tmp_name'],$destination);
+}
+
+//EXEMPLES
+  $upload1 = upload('icone','uploads/monicone1',15360, array('png','gif','jpg','jpeg') );
+  $upload2 = upload('mon_fichier','uploads/file112',1048576, FALSE );
+  if ($upload1) "Upload de l'icone réussi!<br />";
+  if ($upload2) "Upload du fichier réussi!<br />";
+
+	return '';
 });
 
 //envoie les dossier photos 
@@ -60,10 +95,6 @@ $app->get('/photos/{dossier}', function($dossier) {
 });
 
 
-$app->get('/', function () use ($app){
-	return $app->redirect('index.php/commandes/');
-
-});
 
 //listes des commandes en cours
 $app->get('/commandes/', function () use ($templates){
