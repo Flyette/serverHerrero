@@ -1,8 +1,19 @@
 <?php
-require 'parts/header.php';
+$page = $_SERVER['PHP_SELF'];
+$sec = '360';
 $order = new Flyette\Models\Order();
 $baskets = $order->all();
 ?>
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="refresh" content="<?php echo $sec?>;URL='<?php echo $page?>'">
+	<title>Interface de l'assistant</title>
+	<link rel="stylesheet" type="text/css" href="/phpHerrero/css/semantic.min.css">
+	<link rel="stylesheet" type="text/css" href="/phpHerrero/css/icon.min.css">
+	<link rel="stylesheet" href="/phpHerrero/css/style.css">
+</head>
+<body>
 <div class="ui inverted segment">
 	<div class="ui inverted secondary pointing menu">
 		<a class="active item" href="../commandes">
