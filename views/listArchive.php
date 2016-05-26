@@ -20,7 +20,7 @@ $baskets = $order->archived();?>
 <table class="ui celled table">
 	<thead>
 		<tr>
-			<th>Numéro de commande</th>
+			<th>Numéro de commande<a href="?tri=id&direction=ASC"><i class="angle up icon"></i></a><a href="?tri=id&direction=DESC"><i class="angle down icon"></i></a></th>
 			<th>Nom</th>
 			<th>date</th>
 			<th>Nombre de photos</th>
@@ -52,5 +52,9 @@ $baskets = $order->archived();?>
 </tr>
 <tbody></tbody>
 </table>
+<form action="deleteAll" method="post">
+			<p><input type="hidden" name="id" value="<?=$o->id?>"></p>
+			<p><input class="ui button red" type="submit" value="Tout Effacer"></p>
+		</form>
 
 <?php require 'parts/footer.php';?>

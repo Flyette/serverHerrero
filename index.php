@@ -173,6 +173,13 @@ return '';
 
 });
 
+$app->get('/commandes/', function(){
+	if(isset($_GET['tri']) && isset($_GET['direction'])){
+		tri();
+	}
+
+});
+
 $app->get('/index', function() use ($templates){
 	if(isset($_GET['id'])){
 		echo $templates->render('show');
@@ -185,7 +192,7 @@ return '';
 
 $app->post('/commandes/create', function(){
 	ob_start();
-	create($_POST['tiens'], $_POST['identifiant']);
+	create($_POST['tiens'], $_POST['identifiant'], $_POST['prix']);
 	$view = ob_get_contents();
 	ob_end_clean();
 	return $view;
@@ -200,10 +207,20 @@ $app->post('/commandes/delete', function() use ($templates){
 	return '';
 });
 
-function create($data, $name){
+
+$app->post('/commandes/deleteAll', function() use ($templates){
+		$orders = new Flyette\Models\Order();
+		$orders->deleteAll();
+		echo $templates->render('listArchive');
+
+	return '';
+});
+
+function create($data, $name, $prix){
 	$basket = ORM::for_table('basketBDD')->create();
 	$basket->basket = $data;
 	$basket->nom = $name;
+	$basket->prix = $prix;
 	$basket->save();
 }
 

@@ -1,6 +1,6 @@
 <?php
 $page = $_SERVER['PHP_SELF'];
-$sec = '360';
+$sec = '30';
 $order = new Flyette\Models\Order();
 $baskets = $order->all();
 ?>
@@ -35,9 +35,10 @@ $baskets = $order->all();
 <table class="ui celled table">
 	<thead>
 		<tr>
-			<th>Numéro de commande</th>
+			<th>Numéro de commande<a href="?tri=id&direction=ASC">^</a><a href="?tri=id&direction=DESC">v</a></th>
 			<th>Nom</th>
 			<th>Nombre de photos</th>
+			<th>Prix de la commande</th>
 			<th>Photos séléctionnées</th>
 			<th>Date</th>
 			<th>Ouvrir</th>
@@ -49,8 +50,8 @@ $baskets = $order->all();
 			<td><a href="?id=<?= $b->id ?>"><?= $b->id?></a></td>
 			<td><a href="?id=<?= $b->id ?>"><?= $b->nom?></a></td>
 			<td><a href="?id=<?= $b->id ?>"><?= count($b->basket['data'])?></a></td>
-			<td><a href="?id=<?= $b->id ?>"><?php foreach ($b->basket['data'] as $p) {
-				echo '<image height="30" src="'.$p['url'].'"/>';}?></a></td>
+			<td><a href="?id=<?= $b->id ?>"><?= $b->prix?> €</td>
+			<td><a href="?id=<?= $b->id ?>"><?= '<image height="50" src="'.$b->basket['data'][0]['url'].'"/>';?></a></td>
 			<td><a href="?id=<?= $b->id ?>"><?= Flyette\Models\Order::frenchDate($b->created_at)?></a></td>
 			<td>
 				<form  class="ui form" action="" method="get">
