@@ -3,6 +3,7 @@
 namespace Flyette\Models;
 use ORM;
 use Carbon\Carbon;
+use Models\User;
 
 class Order extends Model {
 
@@ -56,9 +57,38 @@ class Order extends Model {
 		return $baskets;	
 	}
 
-		public function deleteOrder($id){
+	public function deleteOrder($id){
 		$t = $this->db->find_one($id);
 		$t->delete();
+	}
+
+	public function deleteAll(){
+		$baskets = $this->archived();
+		foreach ($baskets as $basket) {
+			$basket->delete();
+		}
+	}
+
+	public function tri(Request $req){
+		$users = $this->all();
+		var_dump($users);
+		$query = $req->query->all();
+		$tri = $req->query->get('tri');
+		$direction = $req->query->get('direction');
+		if(isset($tri) && isset($direction)){
+			$users = $this->sort($users, $req->query->get('tri'), $req->query->get('direction'));
+		} else {
+			$users = $this->sort($users);
+		}
+		return $users;
+	}
+
+	public function sort($model, $tri = 'id', $direction = 'ASC'){
+		if($tri != null && $direction == 'ASC'){
+			return $model::order_by_asc($tri);
+		} else {
+			return $model::order_by_desc($tri);
+		}
 	}
 
 }

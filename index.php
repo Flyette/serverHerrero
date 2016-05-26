@@ -173,7 +173,7 @@ return '';
 
 });
 
-$app->get('/commandes/', function(){
+$app->get('/commandes', function(){
 	if(isset($_GET['tri']) && isset($_GET['direction'])){
 		tri();
 	}
