@@ -39,7 +39,7 @@ $baskets = $order->all();
 			<th>Nom</th>
 			<th>Nombre de photos</th>
 			<th>Prix de la commande</th>
-			<th>Photos séléctionnées</th>
+			<th>1ère Photo séléctionnée</th>
 			<th>Date</th>
 			<th>Ouvrir</th>
 			<th>Archiver</th>

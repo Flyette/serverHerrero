@@ -4,7 +4,8 @@ namespace Flyette\Models;
 use ORM;
 use Carbon\Carbon;
 use Models\User;
-
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 class Order extends Model {
 
 
@@ -71,9 +72,10 @@ class Order extends Model {
 
 	public function tri(Request $req){
 		$users = $this->all();
-		var_dump($users);
 		$query = $req->query->all();
 		$tri = $req->query->get('tri');
+		var_dump($tri);
+
 		$direction = $req->query->get('direction');
 		if(isset($tri) && isset($direction)){
 			$users = $this->sort($users, $req->query->get('tri'), $req->query->get('direction'));

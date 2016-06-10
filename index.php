@@ -94,11 +94,10 @@ $app->get('/photos/{dossier}', function($dossier) {
 	return json_encode($data);
 });
 
-
-
 //listes des commandes en cours
-$app->get('/commandes/', function () use ($templates){
+$app->get('/commandes/', function (Request $req) use ($templates){
 	// var_dump(glob('photos/*/*'));
+
 	if(isset($_GET['id'])){
 		echo $templates->render('show');
 	} else {
@@ -173,12 +172,6 @@ return '';
 
 });
 
-$app->get('/commandes', function(){
-	if(isset($_GET['tri']) && isset($_GET['direction'])){
-		tri();
-	}
-
-});
 
 $app->get('/index', function() use ($templates){
 	if(isset($_GET['id'])){
